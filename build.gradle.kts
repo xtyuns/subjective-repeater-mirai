@@ -17,6 +17,7 @@ repositories {
 
 val vertxVersion = "4.4.1"
 dependencies {
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.vertx:vertx-core")
     implementation("io.vertx:vertx-web")
     implementation("io.vertx:vertx-lang-kotlin")

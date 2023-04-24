@@ -6,8 +6,23 @@ import io.vertx.ext.web.RoutingContext
  * Vertx Utils
  */
 object VertxUtils {
-  fun out(ctx: RoutingContext, msg: String) {
-    ctx.response().putHeader("Content-Type", "application/json; charset=utf-8")
-      .end(msg)
-  }
+    fun data(ctx: RoutingContext, data: String) {
+        ctx.json(
+            mapOf(
+                "code" to 0,
+                "msg" to null,
+                "data" to data
+            )
+        )
+    }
+
+    fun error(ctx: RoutingContext, msg: String) {
+        ctx.json(
+            mapOf(
+                "code" to -1,
+                "msg" to msg,
+                "data" to null
+            )
+        )
+    }
 }
