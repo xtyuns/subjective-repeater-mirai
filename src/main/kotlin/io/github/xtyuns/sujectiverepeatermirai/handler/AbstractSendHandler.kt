@@ -1,5 +1,6 @@
 package io.github.xtyuns.sujectiverepeatermirai.handler
 
+import io.github.xtyuns.sujectiverepeatermirai.util.MessageChainUtils
 import io.github.xtyuns.sujectiverepeatermirai.util.VertxUtils
 import io.vertx.core.Handler
 import io.vertx.ext.web.RoutingContext
@@ -15,14 +16,14 @@ abstract class AbstractSendHandler: Handler<RoutingContext> {
         val data = event.body().asJsonObject().mapTo(Data::class.java)
         Bot.instances.filter { data.senders.contains(it.id) }
             .forEach {
-                getTarget(it, data)?.run { runBlocking { sendMessage(data.msg) } }
+                getTarget(it, data)?.run { runBlocking { sendMessage(MessageChainUtils.deserialize(it.asStranger, data.msg)) } }
             }
         VertxUtils.data(event, "success")
     }
 
     abstract fun getTarget(bot: Bot, data: Data): Contact?
 
-    data class Data(val senders: Array<Long>, val target: Long, val msg: String) {
+    data class Data(val senders: Array<Long>, val target: Long, val msg: Array<MessageChainUtils.Msg>) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -31,7 +32,7 @@ abstract class AbstractSendHandler: Handler<RoutingContext> {
 
             if (!senders.contentEquals(other.senders)) return false
             if (target != other.target) return false
-            return msg == other.msg
+            return msg.contentEquals(other.msg)
         }
 
         override fun hashCode(): Int {
