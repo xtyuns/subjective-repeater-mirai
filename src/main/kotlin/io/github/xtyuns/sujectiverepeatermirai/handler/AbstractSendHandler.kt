@@ -13,7 +13,7 @@ import net.mamoe.mirai.contact.Contact
 abstract class AbstractSendHandler: Handler<RoutingContext> {
     override fun handle(event: RoutingContext) {
         val data = event.body().asJsonObject().mapTo(Data::class.java)
-        Bot.instances.filter { data.sender.contains(it.id) }
+        Bot.instances.filter { data.senders.contains(it.id) }
             .forEach {
                 getTarget(it, data)?.run { runBlocking { sendMessage(data.msg) } }
             }
@@ -22,20 +22,20 @@ abstract class AbstractSendHandler: Handler<RoutingContext> {
 
     abstract fun getTarget(bot: Bot, data: Data): Contact?
 
-    data class Data(val sender: Array<Long>, val target: Long, val msg: String) {
+    data class Data(val senders: Array<Long>, val target: Long, val msg: String) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
 
             other as Data
 
-            if (!sender.contentEquals(other.sender)) return false
+            if (!senders.contentEquals(other.senders)) return false
             if (target != other.target) return false
             return msg == other.msg
         }
 
         override fun hashCode(): Int {
-            var result = sender.contentHashCode()
+            var result = senders.contentHashCode()
             result = 31 * result + target.hashCode()
             result = 31 * result + msg.hashCode()
             return result

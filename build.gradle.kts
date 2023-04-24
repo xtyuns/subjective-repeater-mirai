@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "io.github.xtyuns.sujectiverepeatermirai"
-version = "1.0.0-SNAPSHOT"
+version = "0.1.0"
 
 repositories {
     maven("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
