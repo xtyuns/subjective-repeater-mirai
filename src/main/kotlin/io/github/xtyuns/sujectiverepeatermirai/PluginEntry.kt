@@ -3,6 +3,7 @@ package io.github.xtyuns.sujectiverepeatermirai
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.github.xtyuns.sujectiverepeatermirai.config.PluginConfig
+import io.github.xtyuns.sujectiverepeatermirai.handler.FriendMessageHandler
 import io.github.xtyuns.sujectiverepeatermirai.handler.GroupMessageHandler
 import io.github.xtyuns.sujectiverepeatermirai.handler.PingHandler
 import io.github.xtyuns.sujectiverepeatermirai.handler.VerifyHandler
@@ -42,6 +43,11 @@ object PluginEntry : KotlinPlugin(JvmPluginDescription.loadFromResource()) {
             .handler(BodyHandler.create())
             .handler(VerifyHandler)
             .handler(GroupMessageHandler)
+
+        router.post("/send/friend")
+            .handler(BodyHandler.create())
+            .handler(VerifyHandler)
+            .handler(FriendMessageHandler)
 
         return router
     }
