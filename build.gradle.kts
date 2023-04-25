@@ -7,7 +7,7 @@ plugins {
     id("net.mamoe.mirai-console") version "2.14.0"
 }
 
-group = "io.github.xtyuns.sujectiverepeatermirai"
+group = "io.github.xtyuns"
 version = "0.1.0"
 
 repositories {
